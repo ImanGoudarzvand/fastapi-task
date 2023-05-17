@@ -19,7 +19,7 @@ class ConferenceUpdate(ConferenceBase):
     description: Optional[str] = None 
     start_time: Optional[datetime] = None
     end_time: Optional[datetime] = None
-    Capacity: Optional[str] = None
+    Capacity: Optional[int] = None
 
 
 
