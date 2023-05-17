@@ -9,12 +9,12 @@ from app.api import deps
 router = APIRouter()
 
 
-@router.get("/", response_model=List[schemas.conference.ConferenceOut])
+@router.get("/", response_model=List[schemas.ConferenceOut])
 def read_conferences(
     db: Session = Depends(deps.get_db),
     skip: int = 0,
     limit: int = 100,
-    current_user: models.user.User = Depends(deps.get_current_active_user),
+    current_user: models.User = Depends(deps.get_current_active_user),
 ) -> Any:
     """
     Retrieve items.
@@ -29,56 +29,52 @@ def read_conferences(
     return items
 
 
-@router.post("/", response_model=schemas.conference.ConferenceOut)
+@router.post("/", response_model=schemas.ConferenceOut)
 def create_conference(
     *,
     db: Session = Depends(deps.get_db),
-    item_in: schemas.conference.ConferenceCreate,
-    current_user: models.user.User = Depends(deps.get_current_active_user),
+    conference_in: schemas.ConferenceCreate,
+    current_user: models.User = Depends(deps.get_current_active_user),
 ) -> Any:
     """
     Create new item.
     """
-    item = crud.conference.create(db=db, obj_in=item_in)
-    return item
+    conference = crud.conference.create(db=db, obj_in=conference_in)
+    return conference
 
 
-@router.put("/{id}", response_model=schemas.conference.ConferenceOut)
+@router.put("/{id}", response_model=schemas.ConferenceOut)
 def update_conference(
     *,
     db: Session = Depends(deps.get_db),
     id: int,
-    item_in: schemas.conference.ConferenceUpdate,
-    current_user: models.user.User = Depends(deps.get_current_active_user),
+    conference_in: schemas.ConferenceUpdate,
+    current_user: models.User = Depends(deps.get_current_active_user),
 ) -> Any:
     """
-    Update an item.
+    Update an conference.
     """
-    item = crud.conference.get(db=db, id=id)
-    if not item:
-        raise HTTPException(status_code=404, detail="Item not found")
-    if not crud.user.is_superuser(current_user) and (item.owner_id != current_user.id):
-        raise HTTPException(status_code=400, detail="Not enough permissions")
-    item = crud.item.update(db=db, db_obj=item, obj_in=item_in)
-    return item
+    conference = crud.conference.get(db=db, id=id)
+    if not conference:
+        raise HTTPException(status_code=404, detail="Conference not found")
+    conference = crud.conference.update(db=db, db_obj=conference, obj_in=conference_in)
+    return conference
 
 
-@router.get("/{id}", response_model=schemas.conference.ConferenceOut)
+@router.get("/{id}", response_model=schemas.ConferenceOut)
 def read_conference(
     *,
     db: Session = Depends(deps.get_db),
     id: int,
-    current_user: models.user.User = Depends(deps.get_current_active_user),
+    current_user: models.User = Depends(deps.get_current_active_user),
 ) -> Any:
     """
-    Get item by ID.
+    Get conference by ID.
     """
-    item = crud.item.get(db=db, id=id)
-    if not item:
-        raise HTTPException(status_code=404, detail="Item not found")
-    if not crud.user.is_superuser(current_user) and (item.owner_id != current_user.id):
-        raise HTTPException(status_code=400, detail="Not enough permissions")
-    return item
+    conference = crud.conference.get(db=db, id=id)
+    if not conference:
+        raise HTTPException(status_code=404, detail="conference not found")
+    return conference
 
 
 @router.delete("/{id}")
@@ -86,15 +82,13 @@ def delete_conference(
     *,
     db: Session = Depends(deps.get_db),
     id: int,
-    current_user: models.user.User = Depends(deps.get_current_active_user),
+    current_user: models.User = Depends(deps.get_current_active_user),
 ) -> Any:
     """
-    Delete an item.
+    Delete an conference.
     """
-    item = crud.item.get(db=db, id=id)
-    if not item:
-        raise HTTPException(status_code=404, detail="Item not found")
-    if not crud.user.is_superuser(current_user) and (item.owner_id != current_user.id):
-        raise HTTPException(status_code=400, detail="Not enough permissions")
-    item = crud.item.remove(db=db, id=id)
-    return item
+    conference = crud.conference.get(db=db, id=id)
+    if not conference:
+        raise HTTPException(status_code=404, detail="conference not found")
+    conference = crud.conference.remove(db=db, id=id)
+    return conference
