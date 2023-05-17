@@ -18,7 +18,7 @@ def create_user(
     """
     Create new user.
     """
-    user = crud.user.get_by_username(db, email=user_in.email)
+    user = crud.user.get_by_username(db, username=user_in.username)
     if user:
         raise HTTPException(
             status_code=400,
