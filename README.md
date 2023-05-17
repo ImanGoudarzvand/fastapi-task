@@ -29,14 +29,9 @@ cp .env.example .env
 ```
 docker compose up -d
 ```
-6 - fill the database by running the init_db file
-```
-cd app/db
-python init_db.py
-```
 
 
-7 - run the app
+6 - run the app
 ```
 uvicorn app.main:app --reload --port 8000
 ```
