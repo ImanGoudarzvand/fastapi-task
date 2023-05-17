@@ -9,7 +9,7 @@ from app.api import deps
 router = APIRouter()
 
 
-@router.post("/users", response_model=schemas.user.User)
+@router.post("/", response_model=schemas.user.User)
 def create_user(
     *,
     db: Session = Depends(deps.get_db),
