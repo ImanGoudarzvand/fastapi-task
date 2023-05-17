@@ -19,7 +19,7 @@ class Settings(BaseSettings):
     POSTGRES_SERVER: str = 'localhost'
     POSTGRES_USER: str = os.environ["POSTGRES_USER"]
     POSTGRES_PASSWORD: str = os.environ["POSTGRES_PASSWORD"]
-    POSTGRES_DB: str = 'postgres'
+    POSTGRES_DB: str = os.environ["POSTGRES_DB"]
     SQLALCHEMY_DATABASE_URI: str = f"postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_SERVER}:5432/{POSTGRES_DB}"
     EMAIL_RESET_TOKEN_EXPIRE_HOURS: int = 48
     FIRST_SUPERUSER: str = 'admin'
