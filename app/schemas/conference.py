@@ -27,4 +27,7 @@ class ConferenceIn(ConferenceBase):
     pass 
 
 class ConferenceOut(ConferenceBase):
-    pass
+
+    class Config:
+        orm_mode = True
+
