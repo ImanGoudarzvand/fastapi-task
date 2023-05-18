@@ -1,6 +1,6 @@
 from typing import Any
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
 from app import crud, schemas
@@ -9,11 +9,11 @@ from app.api import deps
 router = APIRouter()
 
 
-@router.post("/", response_model=schemas.user.User)
+@router.post("/", response_model=schemas.User, status_code=status.HTTP_201_CREATED)
 def create_user(
     *,
     db: Session = Depends(deps.get_db),
-    user_in: schemas.user.UserCreate,
+    user_in: schemas.UserCreate,
 ) -> Any:
     """
     Create new user.
