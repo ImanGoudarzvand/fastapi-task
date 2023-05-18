@@ -1,6 +1,5 @@
 # fastapi-task
 
-Project is under developement for testing.
 
 1- clone the project
 ```
@@ -35,3 +34,16 @@ docker compose up -d
 ```
 uvicorn app.main:app --reload --port 8000
 ```
+
+7 - run the tests
+```
+pytest
+```
+
+### Possible Improvements:
+1- add more tests ( full coverage)
+2- using Factory functions and more fixtures in Testing
+3- docker build the api app and put it next to other services in docker compose
+4- put testing in a seperate service in compose file
+5- add password validation for users when registering
+...
