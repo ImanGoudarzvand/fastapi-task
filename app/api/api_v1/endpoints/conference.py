@@ -1,8 +1,6 @@
 from typing import Any, List
-
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, status, Response
 from sqlalchemy.orm import Session
-
 from app import crud, models, schemas
 from app.api import deps
 
@@ -19,17 +17,11 @@ def read_conferences(
     """
     Retrieve items.
     """
-    # if crud.user.is_superuser(current_user):
-    #     items = crud.item.get_multi(db, skip=skip, limit=limit)
-    # else:
-    #     items = crud.item.get_multi_by_owner(
-    #         db=db, owner_id=current_user.id, skip=skip, limit=limit
-    #     )
     items = crud.conference.get_multi(db=db)
     return items
 
 
-@router.post("/", response_model=schemas.ConferenceOut)
+@router.post("/", response_model=schemas.ConferenceOut, status_code=status.HTTP_201_CREATED)
 def create_conference(
     *,
     db: Session = Depends(deps.get_db),
@@ -43,7 +35,7 @@ def create_conference(
     return conference
 
 
-@router.put("/{id}", response_model=schemas.ConferenceOut)
+@router.put("/{id}", status_code=status.HTTP_200_OK)
 def update_conference(
     *,
     db: Session = Depends(deps.get_db),
@@ -57,8 +49,16 @@ def update_conference(
     conference = crud.conference.get(db=db, id=id)
     if not conference:
         raise HTTPException(status_code=404, detail="Conference not found")
+
     conference = crud.conference.update(db=db, db_obj=conference, obj_in=conference_in)
-    return conference
+
+    return {"detail": "conference updated"}
+
+
+
+
+
+
 
 
 @router.get("/{id}", response_model=schemas.ConferenceOut)
@@ -90,5 +90,5 @@ def delete_conference(
     conference = crud.conference.get(db=db, id=id)
     if not conference:
         raise HTTPException(status_code=404, detail="conference not found")
-    conference = crud.conference.remove(db=db, id=id)
-    return conference
+    crud.conference.remove(db=db, id=id)
+    return Response("conference deleted", status_code=status.HTTP_204_NO_CONTENT)
