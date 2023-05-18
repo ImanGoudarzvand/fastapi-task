@@ -1,5 +1,5 @@
 from typing import Dict
-
+from fastapi import status
 from fastapi.testclient import TestClient
 from sqlalchemy.orm import Session
 from app.core.config import settings
@@ -32,12 +32,12 @@ def test_get_access_token_return_200(db: Session, client: TestClient) -> None:
 
     response = client.post(f"{settings.API_V1_STR}/login", data=login_data)
     tokens = response.json()
-    assert response.status_code == 200
+    assert response.status_code == status.HTTP_200_OK
     assert "access_token" in tokens
     assert tokens["access_token"]
 
 
-def test_invalid_credentials_return_400(db: Session, client: TestClient) -> None:
+def test_invalid_credentials_return_401(db: Session, client: TestClient) -> None:
 
     username = random_lower_string()
     password = random_lower_string()
@@ -54,6 +54,6 @@ def test_invalid_credentials_return_400(db: Session, client: TestClient) -> None
 
     response = client.post(f"{settings.API_V1_STR}/login", data=login_data)
     tokens = response.json()
-    assert response.status_code == 400
+    assert response.status_code == status.HTTP_401_UNAUTHORIZED
     assert "access_token" not in tokens
 
