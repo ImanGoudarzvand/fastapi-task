@@ -46,12 +46,12 @@ def update_conference(
     """
     Update an conference.
     """
+
     conference = crud.conference.get(db=db, id=id)
     if not conference:
         raise HTTPException(status_code=404, detail="Conference not found")
 
     conference = crud.conference.update(db=db, db_obj=conference, obj_in=conference_in)
-
     return {"detail": "conference updated"}
 
 
@@ -77,13 +77,13 @@ def read_conference(
     return conference
 
 
-@router.delete("/{id}")
+@router.delete("/{id}", response_description="conference deleted", status_code=204)
 def delete_conference(
     *,
     db: Session = Depends(deps.get_db),
     id: int,
     current_user: models.User = Depends(deps.get_current_active_user),
-) -> Any:
+) -> None:
     """
     Delete an conference.
     """
@@ -91,4 +91,4 @@ def delete_conference(
     if not conference:
         raise HTTPException(status_code=404, detail="conference not found")
     crud.conference.remove(db=db, id=id)
-    return Response("conference deleted", status_code=status.HTTP_204_NO_CONTENT)
+
