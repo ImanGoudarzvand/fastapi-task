@@ -6,11 +6,12 @@ from app.core.config import settings
 from app import crud 
 import random
 import string
+
 def random_lower_string() -> str:
     return "".join(random.choices(string.ascii_lowercase, k=10))
 
 
-def random_email() -> str:
+def random_username() -> str:
     return random_lower_string()
 
 
