@@ -6,6 +6,8 @@ from app.db.session import engine
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 
+Base.metadata.create_all(bind=engine)
+
 app = FastAPI(
     title=settings.PROJECT_NAME
 )
@@ -18,7 +20,7 @@ async def validation_exception_handler(request, exc):
     return JSONResponse(status_code=400, content={"errors": "Invalid data"})
 
 
-Base.metadata.create_all(bind=engine)
+
 
 
 
